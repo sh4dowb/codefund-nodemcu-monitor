@@ -74,12 +74,13 @@ void checkWifi() {
 
 boolean updateDatetime() {
   //maybe implement NTP instead?
-  WiFiClientSecure httpsClient;
+  //WiFiClientSecure httpsClient;
+  WiFiClient httpsClient;
 
-  httpsClient.setFingerprint(worldtimeapiFingerprint);
+  //httpsClient.setFingerprint(worldtimeapiFingerprint);
   httpsClient.setTimeout(15000);
   int r = 0;
-  while ((!httpsClient.connect("worldtimeapi.org", 443)) && (r < 30)) {
+  while ((!httpsClient.connect("worldtimeapi.org", 80)) && (r < 30)) {
     delay(100);
     r++;
   }
@@ -120,7 +121,7 @@ boolean updateDatetime() {
 }
 
 boolean updateToken() {
-  //WiFiClientSecure httpsClient; // SSL was working before. then it stopped working. I have no idea why, lol.
+  //WiFiClientSecure httpsClient;
   WiFiClient httpsClient;
 
   //httpsClient.setFingerprint(appFingerprint);
