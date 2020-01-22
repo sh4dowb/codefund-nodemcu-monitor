@@ -4,7 +4,7 @@ This project uses NodeMCU and SSD1306 OLED screen for codefund.io balance tracki
 
 ![Codefund.io NodeMCU balance monitor](https://i.ibb.co/KXBsqWF/image.png)
 
-**Note**: the request to app.codefund.io uses **HTTP**. Using HTTPS for some reason does not work. It should be fixed
+**Note**: the request to app.codefund.io uses **HTTP**. Using HTTPS for some reason does not work. It should be fixed, probably..
 
 ### How to use?
 
