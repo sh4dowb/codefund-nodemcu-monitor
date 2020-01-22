@@ -89,7 +89,6 @@ boolean updateDatetime() {
   httpsClient.print(String("GET /api/timezone/Europe/London.txt HTTP/1.1\r\n") +
                     "Host: worldtimeapi.org\r\n" +
                     useragent +
-                    cookie +
                     "\r\n");
 
 
