@@ -246,7 +246,7 @@ void loop() {
     fetched = 0;
   }
 
-  for (int i = 5; i > 0; i--) {
+  for (int i = 120; i > 0; i--) {
     printFirstLine("update in " + String(i));
     delay(1000);
   }
