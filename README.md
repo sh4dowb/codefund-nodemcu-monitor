@@ -17,12 +17,12 @@ This project uses NodeMCU and SSD1306 OLED screen for codefund.io balance tracki
     // Replace remember_user_token value
 
  - Change lines above for your codefund.io account and Wi-Fi.
- - Install NodeMCU board, Adafruit_GFX and Adafruit_SSD1306 libraries.
+ - Open Arduino IDE, install NodeMCU board, Adafruit_GFX and Adafruit_SSD1306 libraries.
  - Flash the code.
  - Connect your SSD1306 OLED screen as: SDA -> D2 and SCL -> D3
 
 
 ### Issues
 
- - ~`updateToken()` and `updateDatetime()` has problems when using SSL. `updateToken()`'s issue is about Espressif's TLS library, which apparently does not support SNI. `updateDatetime()` with SSL, for some reason, only works in the setup. 5-minute date updates fail to connect. Currently these both use HTTP.~  *Fixed.* Used only one WiFiClientSecure instead of one for each server. It's fixed now.
  - This messy parsing needs to be fixed for sure
+ - ~`updateToken()` and `updateDatetime()` has problems when using SSL. `updateToken()`'s issue is about Espressif's TLS library, which apparently does not support SNI. `updateDatetime()` with SSL, for some reason, only works in the setup. 5-minute date updates fail to connect. Currently these both use HTTP.~  *Fixed.* Used only one WiFiClientSecure instead of one for each server, works okay now.
