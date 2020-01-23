@@ -25,3 +25,4 @@ This project uses NodeMCU and SSD1306 OLED screen for codefund.io balance tracki
 ### Issues
 
  - ~`updateToken()` and `updateDatetime()` has problems when using SSL. `updateToken()`'s issue is about Espressif's TLS library, which apparently does not support SNI. `updateDatetime()` with SSL, for some reason, only works in the setup. 5-minute date updates fail to connect. Currently these both use HTTP.~  *Fixed.* Used only one WiFiClientSecure instead of one for each server. It's fixed now.
+ - This messy parsing needs to be fixed for sure
