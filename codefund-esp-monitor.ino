@@ -23,9 +23,12 @@ const char worldtimeapiFingerprint[] PROGMEM = "49 13 DA AE 65 7B B5 20 82 F6 71
 const char useragent[] PROGMEM = "User-Agent: NodeMCU (github.com/sh4dowb/codefund-esp-monitor)\r\n";
 
 Adafruit_SSD1306 display;
+WiFiClientSecure httpsClient;
 int fetched = 0;
 String daterange = "";
 String token = "";
+float month = 0;
+float today = 0;
 
 void setup() {
   Wire.begin(4, 0);
@@ -41,6 +44,8 @@ void setup() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
   }
+
+  httpsClient.setTimeout(15000);
 
   display.clearDisplay();
   printFirstLine("date updating");
@@ -74,13 +79,9 @@ void checkWifi() {
 
 boolean updateDatetime() {
   //maybe implement NTP instead?
-  //WiFiClientSecure httpsClient;
-  WiFiClient httpsClient;
-
-  //httpsClient.setFingerprint(worldtimeapiFingerprint);
-  httpsClient.setTimeout(15000);
+  httpsClient.setFingerprint(worldtimeapiFingerprint);
   int r = 0;
-  while ((!httpsClient.connect("worldtimeapi.org", 80)) && (r < 30)) {
+  while ((!httpsClient.connect("worldtimeapi.org", 443)) && (r < 30)) {
     delay(100);
     r++;
   }
@@ -103,7 +104,7 @@ boolean updateDatetime() {
       String olddaterange = daterange;
       daterange = month + "%2F" + "01" + "%2F" + year + "+-+" + month + "%2F" + day + "%2F" + year;
       if (daterange != olddaterange) {
-	// token changes with the date. if date changed, update the token.
+  // token changes with the date. if date changed, update the token.
         printFirstLine("token updating");
         int fail = 0;
         while (!updateToken()) {
@@ -121,13 +122,9 @@ boolean updateDatetime() {
 }
 
 boolean updateToken() {
-  //WiFiClientSecure httpsClient;
-  WiFiClient httpsClient;
-
-  //httpsClient.setFingerprint(appFingerprint);
-  httpsClient.setTimeout(15000);
+  httpsClient.setFingerprint(appFingerprint);
   int r = 0;
-  while ((!httpsClient.connect("app.codefund.io", 80)) && (r < 30)) {
+  while ((!httpsClient.connect("app.codefund.io", 443)) && (r < 30)) {
     delay(100);
     r++;
   }
@@ -157,14 +154,10 @@ boolean updateToken() {
   return false;
 }
 
-
-void loop() {
-  checkWifi();
-  printFirstLine("balance updating");
-  WiFiClientSecure httpsClient;
-
+boolean updateBalance(){
+  month = 0;
+  today = 0;
   httpsClient.setFingerprint(metabaseFingerprint);
-  httpsClient.setTimeout(15000);
   int r = 0;
   while ((!httpsClient.connect("metabase.codefund.io", 443)) && (r < 30)) {
     delay(100);
@@ -172,8 +165,7 @@ void loop() {
   }
   if (r == 30) {
     printFirstLine("metabase conn fail");
-    delay(10000);
-    return;
+    return false;
   }
 
   httpsClient.print(String("GET /api/embed/dashboard/") + token + "/dashcard/230/card/274" + " HTTP/1.1\r\n" +
@@ -191,8 +183,6 @@ void loop() {
 
 
   boolean startRevenue = false;
-  float month = 0;
-  float today = 0;
   boolean dataread = false;
 
   // parse daily revenues
@@ -211,13 +201,24 @@ void loop() {
       httpsClient.readStringUntil(',');
     }
   }
-
+  
   // sometimes no data is returned
   if (!dataread) {
     printFirstLine("metabase parse fail");
-    delay(10000);
-    return;
+    return false;
   }
+}
+
+
+void loop() {
+  checkWifi();
+  printFirstLine("balance updating");
+
+  if(!updateBalance()){
+    delay(10000);
+    return; //try again
+  }
+
   display.clearDisplay();
 
   display.setTextSize(2);
@@ -245,7 +246,7 @@ void loop() {
     fetched = 0;
   }
 
-  for (int i = 120; i > 0; i--) {
+  for (int i = 5; i > 0; i--) {
     printFirstLine("update in " + String(i));
     delay(1000);
   }
