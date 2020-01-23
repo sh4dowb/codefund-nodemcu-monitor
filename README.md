@@ -4,8 +4,6 @@ This project uses NodeMCU and SSD1306 OLED screen for codefund.io balance tracki
 
 ![Codefund.io NodeMCU balance monitor](https://i.ibb.co/KXBsqWF/image.png)
 
-**Note**: the request to app.codefund.io uses **HTTP**. See https://github.com/nodemcu/nodemcu-firmware/blob/master/docs/modules/tls.md . "The TLS glue provided by Espressif provides no interface to TLS SNI."
-
 
 ### How to use?
 
@@ -26,4 +24,4 @@ This project uses NodeMCU and SSD1306 OLED screen for codefund.io balance tracki
 
 ### Issues
 
- - `updateToken()` and `updateDatetime()` has problems when using SSL. `updateToken()`'s issue is about Espressif's TLS library, which apparently does not support SNI. `updateDatetime()` with SSL, for some reason, only works in the setup. 5-minute date updates fail to connect. Currently these both use HTTP.
+ - ~`updateToken()` and `updateDatetime()` has problems when using SSL. `updateToken()`'s issue is about Espressif's TLS library, which apparently does not support SNI. `updateDatetime()` with SSL, for some reason, only works in the setup. 5-minute date updates fail to connect. Currently these both use HTTP.~  *Fixed.* Used only one WiFiClientSecure instead of one for each server. It's fixed now.
