@@ -18,7 +18,7 @@ const char cookie[] PROGMEM = "Cookie: remember_user_token=eyJf.......\r\n";
 
 
 const char appFingerprint[] PROGMEM = "41 FF FA 14 78 D6 E9 8C 71 65 98 7E 17 27 B3 CE 29 07 27 72";
-const char metabaseFingerprint[] PROGMEM = "99 3D AA 94 9A FA BA 71 46 1A 8C F8 26 2F 2D C2 D0 0F 36 41";
+const char metabaseFingerprint[] PROGMEM = "77 3F 22 93 99 F6 95 89 31 B5 AD DF 07 E3 1B A3 1F 24 5E 00";
 const char worldtimeapiFingerprint[] PROGMEM = "49 13 DA AE 65 7B B5 20 82 F6 71 CD A9 CB 45 9C D2 89 47 FF";
 const char useragent[] PROGMEM = "User-Agent: NodeMCU (github.com/sh4dowb/codefund-esp-monitor)\r\n";
 
